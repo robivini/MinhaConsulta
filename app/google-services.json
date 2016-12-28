@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_id": "doctor-app-1001",
+    "project_number": "720391900040",
+    "name": "Doctor App"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:720391900040:android:25b0dd312c8e6e4f",
+        "client_id": "android:com.drapp",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.drapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "720391900040-u4ncl4mr0boe10nl9er2j08er1831abp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.drapp",
+            "certificate_hash": "C0A61206841B85E53691CB1E37A9F63F6F6A2218"
+          }
+        },
+        {
+          "client_id": "720391900040-h87mrlsgf14ct0rsltdnhe2a88t35266.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "720391900040-v4dncjp0m1ahhm7jk0thd0kfqrof3qdp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 2,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}
