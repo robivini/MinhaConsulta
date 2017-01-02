@@ -8,7 +8,7 @@ public class ConstValue {
 /* Change 1 : CHange site_url and replace with your url where you hosting server side code.
  * Change 2 : GCM_SENDER_ID  replace with your gcm sender id. you can get this id from https://console.developers.google.com/
 */	
-	public static String site_url = "http://192.168.86.6:8080/doctor_real/Source";
+	public static String site_url = "http://awmkt.com.br/consulta";
 	public static String JSON_REGISTER= site_url+"/index.php?component=json&action=register";
 	public static String JSON_LOGIN=site_url+"/index.php?component=json&action=login";
 	public static String JSON_SEND_PASSWORD=site_url+"/index.php?component=json&action=send_password";
