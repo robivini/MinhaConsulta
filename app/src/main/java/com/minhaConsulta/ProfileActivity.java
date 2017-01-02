@@ -1,9 +1,11 @@
 package com.minhaConsulta;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -39,6 +41,7 @@ import appconfig.ConstValue;
 import util.ConnectionDetector;
 
 public class ProfileActivity extends ActionBarActivity {
+	private static final int MY_PERMISSIONS_SMS = 0;
 	public SharedPreferences settings;
 	public ConnectionDetector cd;
 	EditText txtName,txtEmail,txtPhone,txtCity,txtZip,txtCode;
@@ -98,6 +101,27 @@ public class ProfileActivity extends ActionBarActivity {
 				new saveSettings().execute(true);
 			}
 		});
+
+
+		if (ActivityCompat.shouldShowRequestPermissionRationale(ProfileActivity.this,
+				Manifest.permission.READ_PHONE_STATE)) {
+
+			// Show an explanation to the user *asynchronously* -- don't block
+			// this thread waiting for the user's response! After the user
+			// sees the explanation, try again to request the permission.
+
+		} else {
+
+			// No explanation needed, we can request the permission.
+
+			ActivityCompat.requestPermissions(ProfileActivity.this,
+					new String[]{Manifest.permission.SEND_SMS},
+					MY_PERMISSIONS_SMS);
+
+			// MY_PERMISSIONS_REQUEST_READ_PHONE_STATE is an
+			// app-defined int constant. The callback method gets the
+			// result of the request.
+		}
 		
 	}
 
@@ -216,6 +240,8 @@ public class ProfileActivity extends ActionBarActivity {
 			}else{
 				try {
 					//settings.edit().putString("app_mobile", textPhone.getText().toString()).commit();
+
+					//ActivityCompat.requestPermissions(ProfileActivity.this,new String[]{Manifest.permission.SEND_SMS},1);
 					SmsManager smsManager = SmsManager.getDefault();
                     smsManager.sendTextMessage(settings.getString("user_phone", ""), null, getResources().getString(R.string.sms_confirmation_code).replace("#code#",settings.getString("uniquecode", "")), null, null);
                     //Toast.makeText(getApplicationContext(), "SMS Sent!"+settings.getString("reg_id", "")+" - "+settings.getString("app_id", ""),
