@@ -133,7 +133,7 @@ public class FbLoginActivity extends FragmentActivity implements ActivityCompat.
 			// Check if the only required permission has been granted
 			if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 				// Camera permission has been granted, preview can be displayed
-				Log.i("KKKKK", "CHEGOU AQUI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
 			} else {
 
 			}
@@ -455,6 +455,7 @@ public class FbLoginActivity extends FragmentActivity implements ActivityCompat.
 			handleSignInResult(result);
 		}
 	}
+
 	private void handleSignInResult(GoogleSignInResult result) {
 		Log.d("Google Signin", "handleSignInResult:" + result.isSuccess());
 		if (result.isSuccess()) {

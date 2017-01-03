@@ -100,7 +100,7 @@
     <string name="city">Cidade : </string>
     <string name="zip">Zip : </string>
     <string name="save">Salvar</string>
-    <string name="Confirm_Mobile">Confirmar Telefone</string>
+    <string name="Confirm_Mobile">Confirmar telefone</string>
     <string name="hint_fname_lname">Primeiro nome Ultimo Nome</string>
     <string name="hint_email">you@xy.com</string>
     <string name="hint_password">Senha</string>
@@ -117,9 +117,9 @@
     <string name="News_Latter">Boletim de Notícias</string>
     <string name="find_a_doctor">Encontrar um Médico</string>
     <string name="Continue_without_login">Continuar sem realizar o login</string>
-    <string name="book_appoitment">Livro de Consultas</string>
+    <string name="book_appoitment">Agendar Consulta</string>
     <string name="Drive_to_location">Dirigir para a localidade</string>
-    <string name="Comments">Comentarios</string>
+    <string name="Comments">Comentários</string>
     <string name="no_intent_connection">Por favor, conecte seu dispositivo a internet</string>
     <string name="loading_wait">Carregando. Por favor, espere...</string>
     <string name="sms_send_failed">Falha no SMS, por favor tente novamente mais tarde!</string>

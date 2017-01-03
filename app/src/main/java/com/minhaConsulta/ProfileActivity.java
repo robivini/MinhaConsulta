@@ -118,6 +118,7 @@ public class ProfileActivity extends ActionBarActivity {
 					new String[]{Manifest.permission.SEND_SMS},
 					MY_PERMISSIONS_SMS);
 
+
 			// MY_PERMISSIONS_REQUEST_READ_PHONE_STATE is an
 			// app-defined int constant. The callback method gets the
 			// result of the request.

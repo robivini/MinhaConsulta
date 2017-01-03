@@ -82,7 +82,7 @@ public class Login2Activity extends ActionBarActivity {
 		protected void onPreExecute() {
 			email = txtEmail.getText().toString() ;
 			password = txtPassword.getText().toString();
-			dialog = ProgressDialog.show(Login2Activity.this, "", 
+			dialog = ProgressDialog.show(Login2Activity.this, "",
                     getResources().getString(R.string.loading_wait), true);
 			super.onPreExecute();
 
