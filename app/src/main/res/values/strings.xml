@@ -136,4 +136,7 @@
     <string name="sms_confirmation_code">Obrigado, o Codigo de confirmação é : #code#</string>
     <string name="app_permission">Permissão do App </string>
     <string name="app_permission_message">Tenha certeza de que seu app tem as permissões requeridas</string>
+    <string name="txtsemcidade">Esta cidade ainda não possui essa Especialidade!</string>
+    <string name="txtcity">Esta cidade ainda não possui essa especialidade</string>
+    <string name="txtindique">Indique Alguém!</string>
 </resources>

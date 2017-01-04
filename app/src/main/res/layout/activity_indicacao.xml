@@ -1,6 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:weightSum="1">
 
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="264dp"
+        android:src="@drawable/icone_care_02"
+        android:id="@+id/imageView7"
+        android:layout_weight="0.10" />
+
+    <TextView
+        android:text="@string/txtcity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView7"
+        android:gravity="center" />
+
+    <TextView
+        android:text="@string/txtindique"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView8"
+        android:layout_weight="0.10"
+        android:gravity="center"
+        android:textSize="30sp"
+        android:layout_marginTop="10dp" />
+
+    <EditText
+        android:layout_width="371dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editText4"
+        android:layout_weight="0.07"
+        android:hint="Nome Completo"
+        android:layout_marginTop="10dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:ems="10"
+        android:id="@+id/editText5"
+        android:layout_weight="0.10"
+        android:hint="DDD + Telefone" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/editText6"
+        android:layout_weight="0.10"
+        android:hint="E-mail" />
+
+    <Button
+        android:text="Enviar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button"
+        android:background="#17a2e3"
+        android:textColor="#ffffff"
+        android:layout_weight="0.10"
+        android:layout_marginBottom="10dp" />
 </LinearLayout>
