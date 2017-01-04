@@ -36,5 +36,6 @@ public class ConstValue {
 	public static HashMap<String, String> selected_category; 
 	public static HashMap<String, String> selected_city;
 	public static HashMap<String, String> selected_doctor;
+	public static String selecionado;
 	public static JSONObject selected_clinic;
  }

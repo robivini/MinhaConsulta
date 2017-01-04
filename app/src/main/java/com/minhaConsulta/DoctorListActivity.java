@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -67,7 +68,10 @@ public class DoctorListActivity extends ActionBarActivity {
 		}catch (IOException e) {
 			    e.printStackTrace();
 		}
-		
+
+		Log.i("|||||||||||||", String.valueOf(ConstValue.selected_category));
+		Log.i("||||||||||||2", doctoryarray.get(0).toString());
+
 		listview = (ListView)findViewById(R.id.listView1);
 		adapter = new DrListAdapter(getApplicationContext(), doctoryarray);
 		listview.setAdapter(adapter);

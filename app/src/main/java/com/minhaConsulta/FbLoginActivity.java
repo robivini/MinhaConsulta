@@ -452,6 +452,8 @@ public class FbLoginActivity extends FragmentActivity implements ActivityCompat.
 		// Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
 		if (requestCode == RC_SIGN_IN) {
 			GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+			int statusCode = result.getStatus().getStatusCode();
+			Log.i("OOOOOOOOOO", String.valueOf(statusCode));
 			handleSignInResult(result);
 		}
 	}

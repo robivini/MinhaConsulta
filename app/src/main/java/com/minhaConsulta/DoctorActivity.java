@@ -17,6 +17,13 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.minhaConsulta.AppointmentActivity;
+import com.minhaConsulta.CommonFunctions;
+import com.minhaConsulta.FbLoginActivity;
+import com.minhaConsulta.MapActivity;
+import com.minhaConsulta.ProfileActivity;
+import com.minhaConsulta.R;
+import com.minhaConsulta.ReviewsActivity;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;

@@ -112,6 +112,13 @@
             android:name="com.minhaConsulta.FbLoginActivity"
             android:label="@string/title_activity_login"/>
         <activity android:name="com.minhaConsulta.NeedPasword"/>
+        <activity
+            android:name="com.minhaConsulta.Doutor"
+            android:label="@string/title_activity_doctor"/>
+        <activity
+            android:name="com.minhaConsulta.Indicacao"
+            android:label="Indicar"/>
+
 
 
         <!-- [START gcm_receiver] -->

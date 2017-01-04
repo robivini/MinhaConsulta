@@ -92,12 +92,12 @@ public class MainActivity extends ActionBarActivity {
 
 		 newsArray = new ArrayList<HashMap<String,String>>();
 	        try {
-	        	newsArray = (ArrayList<HashMap<String,String>>) ObjectSerializer.deserialize(settings.getString(ConstValue.PREFS_MAIN_CAT, ObjectSerializer.serialize(new ArrayList<HashMap<String,String>>())));		
+	        	newsArray = (ArrayList<HashMap<String,String>>) ObjectSerializer.deserialize(settings.getString(ConstValue.PREFS_MAIN_CAT, ObjectSerializer.serialize(new ArrayList<HashMap<String,String>>())));
 			}catch (IOException e) {
 				    e.printStackTrace();
 			}
 	        new loadNewsTask().execute(true);
-	        
+
 	        adapter = new MainAdapter(getApplicationContext(), newsArray);
 	        GridView gridview = (GridView)findViewById(R.id.gridView1);
 	        gridview.setAdapter(adapter);
@@ -108,7 +108,7 @@ public class MainActivity extends ActionBarActivity {
 						int position, long id) {
 					// TODO Auto-generated method stub
 					ConstValue.selected_category = newsArray.get(position);
-					Intent intent = new Intent(MainActivity.this,DoctorListActivity.class);
+					Intent intent = new Intent(MainActivity.this,Doutor.class);
 					startActivity(intent);
 				}
 
@@ -177,9 +177,7 @@ public class MainActivity extends ActionBarActivity {
 				
 				if(cd.isConnectingToInternet())
 				{
-					Log.i("KKKKKKK","OOOOOOOOOOOOOOOOOOOOOOOOOO");
 					json = jParser.getJSONFromUrl(ConstValue.JSON_MAINCAT);
-					Log.i("KKKKKKK",json.toString());
 					if (json.has("data")) {
 						
 					
