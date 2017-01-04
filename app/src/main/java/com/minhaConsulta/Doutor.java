@@ -60,7 +60,7 @@ public class Doutor extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_indicacao);
+        setContentView(R.layout.activity_doctor);
         settings = getSharedPreferences(ConstValue.MAIN_PREF, 0);
         cd=new ConnectionDetector(this);
         getSupportActionBar().setHomeButtonEnabled(true);
