@@ -69,8 +69,6 @@ public class DoctorListActivity extends ActionBarActivity {
 			    e.printStackTrace();
 		}
 
-		Log.i("|||||||||||||", String.valueOf(ConstValue.selected_category));
-		Log.i("||||||||||||2", doctoryarray.get(0).toString());
 
 		listview = (ListView)findViewById(R.id.listView1);
 		adapter = new DrListAdapter(getApplicationContext(), doctoryarray);
@@ -334,6 +332,7 @@ public class DoctorListActivity extends ActionBarActivity {
 				}
 			return null;
 		}
+
 
 	}
 }

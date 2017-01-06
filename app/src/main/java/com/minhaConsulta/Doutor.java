@@ -1,9 +1,20 @@
 package com.minhaConsulta;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.SearchManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,12 +22,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -37,8 +58,13 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import adapters.DrListAdapter;
+import adapters.MainAdapter;
 import appconfig.ConstValue;
+import gcm.QuickstartPreferences;
+import gcm.RegistrationIntentService;
 import imgLoader.AnimateFirstDisplayListener;
+import imgLoader.JSONParser;
 import util.ConnectionDetector;
 import util.ObjectSerializer;
 
@@ -47,16 +73,17 @@ import util.ObjectSerializer;
  */
 
 public class Doutor extends ActionBarActivity {
-    private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
-    DisplayImageOptions options;
-    ImageLoaderConfiguration imgconfig;
-
-    public HashMap<String, String> j_doctor;
     public SharedPreferences settings;
     public ConnectionDetector cd;
-
+    int REQUEST_PLACE_PICKER = 1;
+    ListView listdoctor;
+    DrListAdapter adapter;
     ArrayList<HashMap<String, String>> doctoryarray;
-
+    public int current_page, total_page;
+    ListView listview;
+    FrameLayout listfooterview;
+    Button btnloadmore;
+    ProgressBar pb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,234 +93,230 @@ public class Doutor extends ActionBarActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        current_page = 1;
+        total_page = 0;
+        doctoryarray = new ArrayList<HashMap<String,String>>();
         try {
             doctoryarray = (ArrayList<HashMap<String,String>>) ObjectSerializer.deserialize(settings.getString("doctors"+ConstValue.selected_category.get("id"), ObjectSerializer.serialize(new ArrayList<HashMap<String,String>>())));
         }catch (IOException e) {
             e.printStackTrace();
         }
 
-        Log.i("|||||||||||||", String.valueOf(ConstValue.selected_category));
+        Log.i("$$$$$$$$", String.valueOf(doctoryarray));
 
-        if (doctoryarray.isEmpty()) {
-            Intent intent = new Intent(Doutor.this,Indicacao.class);
-            startActivity(intent);
+
+        new Doutor.loadDrListTask().execute(true);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.listdoctor, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+        int id = item.getItemId();
+        CommonFunctions common = new CommonFunctions();
+        common.menuItemClick(Doutor.this, id);
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode,
+                                    int resultCode, Intent data) {
+
+        if (requestCode == REQUEST_PLACE_PICKER
+                && resultCode == Activity.RESULT_OK) {
+
+            // The user has selected a place. Extract the name and address.
+            final Place place = PlacePicker.getPlace(data, this);
+
+            final CharSequence name = place.getName();
+            final CharSequence address = place.getAddress();
+            String attributions = PlacePicker.getAttributions(data);
+            if (attributions == null) {
+                attributions = "";
+            }
+            Toast.makeText(getApplicationContext(), name, Toast.LENGTH_LONG).show();
+            //mViewName.setText(name);
+            //mViewAddress.setText(address);
+            //mViewAttributions.setText(Html.fromHtml(attributions));
 
         } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
-            ConstValue.selected_doctor = doctoryarray.get(0);
-            Log.i("AAAAAAAAAAAA", ConstValue.selected_doctor.toString());
 
-            File cacheDir = StorageUtils.getCacheDirectory(this);
-            options = new DisplayImageOptions.Builder()
-                    .showImageOnLoading(R.drawable.ic_launcher)
-                    .showImageForEmptyUri(R.drawable.ic_launcher)
-                    .showImageOnFail(R.drawable.ic_launcher)
-                    .cacheInMemory(true)
-                    .cacheOnDisk(true)
-                    .considerExifParams(true)
-                    .displayer(new SimpleBitmapDisplayer())
-                    .imageScaleType(ImageScaleType.NONE)
-                    .build();
+    public class loadDrListTask extends AsyncTask<Boolean, Void, ArrayList<HashMap<String, String>>> {
 
-            imgconfig = new ImageLoaderConfiguration.Builder(this)
-                    .build();
-            ImageLoader.getInstance().init(imgconfig);
+        JSONParser jParser;
+        JSONObject json;
 
-            j_doctor = ConstValue.selected_doctor;
+        @Override
+        protected void onPreExecute() {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+        }
 
-            TextView txtName = (TextView) findViewById(R.id.textDrName);
-            TextView txtDegree = (TextView) findViewById(R.id.textDrDegree);
-            TextView txtExpr = (TextView) findViewById(R.id.textDrExp);
-            TextView txtFees = (TextView) findViewById(R.id.textDrFee);
-            //TextView txtDescription = (TextView)findViewById(R.id.textDescription);
-            TextView txtDesignation = (TextView) findViewById(R.id.textDrDesc);
-            TextView txtSpeciality = (TextView) findViewById(R.id.textDrSpeciality);
-            WebView webview = (WebView) findViewById(R.id.webView1);
-            RatingBar ratingbar = (RatingBar) findViewById(R.id.ratingBar1);
-            ratingbar.setRating(0);
-            ImageView imageBanner = (ImageView) findViewById(R.id.imageBanner);
-            //ImageView imageCover = (ImageView)findViewById(R.id.imageView1);
-            CircularImageView imageCover = (CircularImageView) findViewById(R.id.imageView1);
-
+        @Override
+        protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
+            // TODO Auto-generated method stub
+            if (result!=null) {
+                //adapter.notifyDataSetChanged();
+            }
             try {
-                ImageLoader.getInstance().displayImage(j_doctor.get("banner_path"), imageBanner, options, animateFirstListener);
-                ImageLoader.getInstance().displayImage(j_doctor.get("cover_path"), imageCover, options, animateFirstListener);
-                txtName.setText(j_doctor.get("dr_name"));
-                txtDegree.setText(j_doctor.get("dr_degree"));
-                txtDesignation.setText(j_doctor.get("dr_designation"));
-                if (!j_doctor.get("avg").equalsIgnoreCase("") && !j_doctor.get("avg").equalsIgnoreCase("null")) {
-                    ratingbar.setRating(Float.parseFloat((j_doctor.get("avg"))));
-                }
-                //txtDescription.setText(Html.fromHtml(j_doctor.get("dr_description").toString()));
-                WebSettings wevsettings = webview.getSettings();
-                wevsettings.setDefaultTextEncodingName("utf-8");
-                //webview.loadData("<style> *{ font-size : 12px; } a{ text-decoration:none; color : #000000; } h1,h2,h3,h4,h5,h6 { font-size : 16px;  }</style>"+j_doctor.get("dr_description"), "text/html; charset=utf-8", null);
-                try {
-                    webview.loadData(URLEncoder.encode("<style> *{ font-size : 12px; } a{ text-decoration:none; color : #000000; } h1,h2,h3,h4,h5,h6 { font-size : 16px;  }</style>" + j_doctor.get("dr_description"), "utf-8").replaceAll("\\+", "%20"), "text/html; charset=utf-8", "UTF-8");
-                } catch (UnsupportedEncodingException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-                txtExpr.setText(j_doctor.get("dr_experiance") + getResources().getString(R.string.yr_expr));
-                txtFees.setText(j_doctor.get("dr_fees") + getResources().getString(R.string.currency));
-                txtSpeciality.setText(j_doctor.get("dr_speciality"));
-
-                LinearLayout clinics_list_view = (LinearLayout) findViewById(R.id.list_clinics);
-
-                if (!j_doctor.get("clinic").toString().equalsIgnoreCase("")) {
-                    final JSONArray clinics = new JSONArray(j_doctor.get("clinic").toString());
-                    if (clinics.length() > 0) {
-                        for (int i = 0; i < clinics.length(); i++) {
-                            JSONObject clinic = clinics.getJSONObject(i);
-                            LayoutInflater inflator = LayoutInflater.from(this);
-                            View v = inflator.inflate(R.layout.row_clinics_list, null);
-
-                            TextView textClinic = (TextView) v.findViewById(R.id.textClinicName);
-                            textClinic.setText(clinic.getString("cl_name"));
-                            TextView textAddress = (TextView) v.findViewById(R.id.textClinicAddress);
-                            textAddress.setText(clinic.getString("cl_address"));
-                            TextView textLocation = (TextView) v.findViewById(R.id.textClinicLocation);
-                            textLocation.setText(clinic.getString("cl_location"));
-
-//				        final WebView webView1 = (WebView)v.findViewById(R.id.webView1);
-//				        //final TextView textTimeTalbe = (TextView)v.findViewById(R.id.textTimeTable);
-//				        //textTimeTalbe.setText(Html.fromHtml(clinic.getString("time_table").toString()));
-//				        webView1.setVisibility(View.GONE);
-//				        webView1.loadData(clinic.getString("time_table").toString(), "text/html", "UTF-8");
-//
-//				        LinearLayout timeButton = (LinearLayout)v.findViewById(R.id.layoutTimeBtn);
-//				        timeButton.setOnClickListener(new OnClickListener() {
-//
-//							@Override
-//							public void onClick(View v) {
-//								// TODO Auto-generated method stub
-//								if(webView1.getVisibility()==View.GONE)
-//									webView1.setVisibility(View.VISIBLE);
-//								else
-//									webView1.setVisibility(View.GONE);
-//							}
-//						});
-
-                            LinearLayout galleryView = (LinearLayout) v.findViewById(R.id.layoutPhotos);
-                            if (clinic.get("photos") instanceof JSONArray) {
-                                JSONArray photos = clinic.getJSONArray("photos");
-                                if (photos.length() > 0) {
-                                    int lenth = photos.length();
-                                    //if(lenth > 3)
-                                    //	lenth = 3;
-                                    for (int j = 0; j < lenth; j++) {
-                                        JSONObject jo = photos.getJSONObject(j);
-                                        ImageView imgGal = new ImageView(this);
-                                        ImageLoader.getInstance().displayImage(jo.getString("image_path"), imgGal, options, animateFirstListener);
-                                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(45, 45);
-                                        imgGal.setLayoutParams(layoutParams);
-                                        imgGal.setBackgroundResource(R.drawable.xml_frame_border);
-                                        galleryView.addView(imgGal);
-                                    }
-
-                                }
-                            }
-
-                            Button btnReview = (Button) v.findViewById(R.id.buttonReview);
-                            btnReview.setContentDescription(i + "");
-                            btnReview.setOnClickListener(new View.OnClickListener() {
-
-                                @Override
-                                public void onClick(View v) {
-                                    // TODO Auto-generated method stub
-                                    String contentid = (String) v.getContentDescription();
-                                    try {
-                                        ConstValue.selected_clinic = clinics.getJSONObject(Integer.parseInt(contentid));
-                                    } catch (NumberFormatException e) {
-                                        // TODO Auto-generated catch block
-                                        e.printStackTrace();
-                                    } catch (JSONException e) {
-                                        // TODO Auto-generated catch block
-                                        e.printStackTrace();
-                                    }
-                                    Intent intent = new Intent(Doutor.this, ReviewsActivity.class);
-                                    startActivity(intent);
-                                }
-                            });
-
-                            Button btnmap = (Button) v.findViewById(R.id.buttonLocation);
-                            btnmap.setContentDescription(i + "");
-                            btnmap.setOnClickListener(new View.OnClickListener() {
-
-                                @Override
-                                public void onClick(View v) {
-                                    // TODO Auto-generated method stub
-                                    String contentid = (String) v.getContentDescription();
-                                    try {
-                                        ConstValue.selected_clinic = clinics.getJSONObject(Integer.parseInt(contentid));
-                                    } catch (NumberFormatException e) {
-                                        // TODO Auto-generated catch block
-                                        e.printStackTrace();
-                                    } catch (JSONException e) {
-                                        // TODO Auto-generated catch block
-                                        e.printStackTrace();
-                                    }
-                                    Intent intent = new Intent(Doutor.this, MapActivity.class);
-                                    startActivity(intent);
-                                }
-                            });
-
-                            Button btnBook = (Button) v.findViewById(R.id.buttonBook);
-                            btnBook.setContentDescription(i + "");
-                            btnBook.setOnClickListener(new View.OnClickListener() {
-
-                                @Override
-                                public void onClick(View v) {
-                                    // TODO Auto-generated method stub
-                                    if (settings.getString("user_id", "").equalsIgnoreCase("")) {
-                                        Intent intent = new Intent(Doutor.this, FbLoginActivity.class);
-                                        startActivity(intent);
-                                    } else {
-                                        if (!settings.getBoolean("mobile_confirm", false)) {
-                                            Intent intent = new Intent(Doutor.this, ProfileActivity.class);
-                                            startActivity(intent);
-                                        } else {
-                                            String contentid = (String) v.getContentDescription();
-                                            try {
-                                                ConstValue.selected_clinic = clinics.getJSONObject(Integer.parseInt(contentid));
-                                            } catch (NumberFormatException e) {
-                                                // TODO Auto-generated catch block
-                                                e.printStackTrace();
-                                            } catch (JSONException e) {
-                                                // TODO Auto-generated catch block
-                                                e.printStackTrace();
-                                            }
-                                            Intent intent = new Intent(Doutor.this, AppointmentActivity.class);
-                                            startActivity(intent);
-                                        }
-                                    }
-                                }
-                            });
-
-                            clinics_list_view.addView(v);
-                        }
-                    }
-                }
-
-
-            } catch (JSONException e) {
+                settings.edit().putString("doctors"+ConstValue.selected_category.get("id"),ObjectSerializer.serialize(doctoryarray)).apply();
+            } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+
+            if(current_page < total_page){
+
+
+                btnloadmore.setText(getResources().getString(R.string.load_more));
+                btnloadmore.setVisibility(View.VISIBLE);
+                pb.setVisibility(View.GONE);
+
+
+                btnloadmore.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        // TODO Auto-generated method stub
+                        current_page++;
+                        btnloadmore.setVisibility(View.GONE);
+                        pb.setVisibility(View.VISIBLE);
+
+                        new Doutor.loadDrListTask().execute(true);
+                    }
+                });
+            }else{
+                btnloadmore.setVisibility(View.GONE);
+                pb.setVisibility(View.GONE);
+
+            }
+            adapter.notifyDataSetChanged();
+            super.onPostExecute(result);
         }
 
-//		Button btnbook = (Button)findViewById(R.id.buttonBook);
-//		btnbook.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				Intent intent = new Intent(DoctorActivity.this,AppointmentActivity.class);
-//				startActivity(intent);
-//			}
-//		});
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            // TODO Auto-generated method stub
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onCancelled(ArrayList<HashMap<String, String>> result) {
+            // TODO Auto-generated method stub
+            super.onCancelled(result);
+        }
+
+
+        @Override
+        protected ArrayList<HashMap<String, String>> doInBackground(
+                Boolean... params) {
+            // TODO Auto-generated method stub
+
+            try {
+                jParser = new JSONParser();
+
+                if(cd.isConnectingToInternet())
+                {
+                    String query = "";
+                    if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
+                        query = getIntent().getStringExtra(SearchManager.QUERY);
+                        //use the query to search your data somehow
+                    }
+                    String urlstring = ConstValue.JSON_DR_LIST+"&cat_id="+ConstValue.selected_category.get("id")+"&city="+settings.getString("selected_city", "")+"&go="+current_page+"&search="+query;
+
+                    json = jParser.getJSONFromUrl(ConstValue.JSON_DR_LIST+"&cat_id="+ConstValue.selected_category.get("id")+"&city="+settings.getString("selected_city", "")+"&go="+current_page+"&search="+query);
+                    if (json.has("data")) {
+
+                        if(json.get("data") instanceof JSONArray){
+
+                            JSONArray jsonDrList = json.getJSONArray("data");
+
+                            if(current_page==1)
+                                doctoryarray.clear();
+
+                            current_page = Integer.parseInt(json.getString("current_page"));
+                            total_page = Integer.parseInt(json.getString("total_pages"));
+
+                            for (int i = 0; i < jsonDrList.length(); i++) {
+                                JSONObject obj = jsonDrList.getJSONObject(i);
+                                HashMap<String, String> map = new HashMap<String, String>();
+
+
+                                map.put("dr_id", obj.getString("dr_id"));
+
+                                map.put("cat_id", obj.getString("cat_id"));
+                                map.put("dr_name", obj.getString("dr_name"));
+                                map.put("dr_gender", obj.getString("dr_gender"));
+                                map.put("dr_email", obj.getString("dr_email"));
+                                map.put("dr_degree", obj.getString("dr_degree"));
+                                map.put("dr_designation", obj.getString("dr_designation"));
+                                map.put("dr_experiance", obj.getString("dr_experiance"));
+                                map.put("dr_fees", obj.getString("dr_fees"));
+                                map.put("dr_description", obj.getString("dr_description"));
+                                map.put("dr_country", obj.getString("dr_country"));
+                                map.put("dr_city", obj.getString("dr_city"));
+                                map.put("dr_phone", obj.getString("dr_phone"));
+                                map.put("dr_speciality", obj.getString("dr_speciality"));
+
+                                map.put("dr_cover_image", obj.getString("dr_cover_image"));
+                                map.put("dr_banner_image", obj.getString("dr_banner_image"));
+                                map.put("cover_path", obj.getString("cover_path"));
+                                map.put("banner_path", obj.getString("banner_path"));
+                                map.put("avg", obj.getString("avg"));
+                                map.put("count", obj.getString("count"));
+                                //map.put("time_table", obj.getString("time_table"));
+                                //if(obj.get("clinic") instanceof JSONArray){
+                                String clinics = obj.get("clinic").toString();
+                                map.put("clinic", clinics);
+                                //}
+                                //if(obj.get("times") instanceof JSONArray){
+                                //	String times = obj.get("times").toString();
+                                //	map.put("times", times);
+                                //}
+                                doctoryarray.add(map);
+
+
+                            }
+                        }
+
+                    }
+                }else
+                {
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_intent_connection), Toast.LENGTH_LONG).show();
+                }
+
+                jParser = null;
+                json = null;
+
+            } catch (Exception e) {
+                // TODO: handle exception
+
+                return null;
+            }
+            return null;
+        }
+
     }
 }
-
-
-

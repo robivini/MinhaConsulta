@@ -96,7 +96,10 @@ public class MainActivity extends ActionBarActivity {
 			}catch (IOException e) {
 				    e.printStackTrace();
 			}
+
 	        new loadNewsTask().execute(true);
+
+
 
 	        adapter = new MainAdapter(getApplicationContext(), newsArray);
 	        GridView gridview = (GridView)findViewById(R.id.gridView1);
@@ -108,7 +111,7 @@ public class MainActivity extends ActionBarActivity {
 						int position, long id) {
 					// TODO Auto-generated method stub
 					ConstValue.selected_category = newsArray.get(position);
-					Intent intent = new Intent(MainActivity.this,Doutor.class);
+					Intent intent = new Intent(MainActivity.this,DoctorListActivity.class);
 					startActivity(intent);
 				}
 

@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
@@ -23,6 +24,8 @@ public class Splash extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
+
+
 
 
 		checkPermission();
@@ -62,14 +65,28 @@ public class Splash extends Activity {
 		cd=new ConnectionDetector(this);
 		 
 		if(settings.getString("user_id", "").equalsIgnoreCase("")){
-			 Intent intent = new Intent(Splash.this,FbLoginActivity.class);
-			 startActivity(intent);
-			 finish();
+			Handler h = new Handler();
+			h.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					Intent intent = new Intent(Splash.this,FbLoginActivity.class);
+					startActivity(intent);
+					finish();
+
+				}
+			}, 1000 * 2);
+
 		}else{
-			 
-			 Intent intent = new Intent(Splash.this,MainActivity.class);
-			 startActivity(intent);
-			 finish();
+			Handler h = new Handler();
+			h.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					Intent intent = new Intent(Splash.this,MainActivity.class);
+					startActivity(intent);
+					finish();
+				}
+			}, 1000 * 2);
+
 		}
 	}
 

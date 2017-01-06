@@ -1,12 +1,16 @@
 package adapters;
 
+import appconfig.ConstValue;
 import imgLoader.AnimateFirstDisplayListener;
+import util.ObjectSerializer;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 
+import com.minhaConsulta.DoctorListActivity;
 import com.minhaConsulta.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -21,6 +25,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.text.Html.ImageGetter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,10 +44,10 @@ public class MainAdapter extends BaseAdapter implements ImageGetter {
 	DisplayImageOptions options;
 	ImageLoaderConfiguration imgconfig; 
 	int count = 0;
-	
+
 	public MainAdapter(Context context, ArrayList<HashMap<String, String>> arraylist){
 		this.context = context;
-		
+
 		File cacheDir = StorageUtils.getCacheDirectory(context);
 		options = new DisplayImageOptions.Builder()
 		.showImageOnLoading(R.drawable.ic_launcher)
@@ -58,7 +63,10 @@ public class MainAdapter extends BaseAdapter implements ImageGetter {
 		imgconfig = new ImageLoaderConfiguration.Builder(context)
 		.build();
 		ImageLoader.getInstance().init(imgconfig);
-			
+
+		ArrayList<HashMap<String, String>> newsArray = null;
+
+
 		postItems = arraylist;
 		settings = context.getSharedPreferences(PREFS_NAME, 0);		
 		
@@ -84,9 +92,8 @@ public class MainAdapter extends BaseAdapter implements ImageGetter {
 		if (convertView == null) {
 	            LayoutInflater mInflater = (LayoutInflater)
 	            context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-	            convertView = mInflater.inflate(R.layout.row_main_gridview, null);	
-	           
-	     
+	            convertView = mInflater.inflate(R.layout.row_main_gridview, null);
+
 	        }
 			HashMap<String, String> map = new HashMap<String, String>();
 			map = postItems.get(position);

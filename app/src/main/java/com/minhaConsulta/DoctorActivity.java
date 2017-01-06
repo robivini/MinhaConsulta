@@ -83,13 +83,13 @@ public class DoctorActivity extends ActionBarActivity {
 		TextView txtName = (TextView)findViewById(R.id.textDrName);
 		TextView txtDegree = (TextView)findViewById(R.id.textDrDegree);
 		TextView txtExpr = (TextView)findViewById(R.id.textDrExp);
-		TextView txtFees = (TextView)findViewById(R.id.textDrFee);
+		//TextView txtFees = (TextView)findViewById(R.id.textDrFee);
 		//TextView txtDescription = (TextView)findViewById(R.id.textDescription);
 		TextView txtDesignation = (TextView)findViewById(R.id.textDrDesc);
 		TextView txtSpeciality = (TextView)findViewById(R.id.textDrSpeciality);
 		WebView webview = (WebView)findViewById(R.id.webView1);
-		RatingBar ratingbar = (RatingBar)findViewById(R.id.ratingBar1);
-		ratingbar.setRating(0);
+//		RatingBar ratingbar = (RatingBar)findViewById(R.id.ratingBar1);
+//		ratingbar.setRating(0);
 		ImageView imageBanner = (ImageView)findViewById(R.id.imageBanner);
 		//ImageView imageCover = (ImageView)findViewById(R.id.imageView1);
 		CircularImageView imageCover = (CircularImageView)findViewById(R.id.imageView1);
@@ -99,9 +99,9 @@ public class DoctorActivity extends ActionBarActivity {
 			txtName.setText(j_doctor.get("dr_name"));
 			txtDegree.setText(j_doctor.get("dr_degree"));
 			txtDesignation.setText(j_doctor.get("dr_designation"));
-			if(!j_doctor.get("avg").equalsIgnoreCase("") && !j_doctor.get("avg").equalsIgnoreCase("null") ){
-			ratingbar.setRating(Float.parseFloat((j_doctor.get("avg"))));
-			}
+//			if(!j_doctor.get("avg").equalsIgnoreCase("") && !j_doctor.get("avg").equalsIgnoreCase("null") ){
+//			ratingbar.setRating(Float.parseFloat((j_doctor.get("avg"))));
+//			}
 			//txtDescription.setText(Html.fromHtml(j_doctor.get("dr_description").toString()));
 			WebSettings wevsettings = webview.getSettings();
 			wevsettings.setDefaultTextEncodingName("utf-8");
@@ -113,7 +113,7 @@ public class DoctorActivity extends ActionBarActivity {
 				e1.printStackTrace();
 			}
 			txtExpr.setText(j_doctor.get("dr_experiance")+getResources().getString(R.string.yr_expr));
-			txtFees.setText(j_doctor.get("dr_fees")+getResources().getString(R.string.currency));
+			//txtFees.setText(j_doctor.get("dr_fees")+getResources().getString(R.string.currency));
 			txtSpeciality.setText(j_doctor.get("dr_speciality"));
 			
 			LinearLayout clinics_list_view = (LinearLayout)findViewById(R.id.list_clinics);
@@ -172,7 +172,7 @@ public class DoctorActivity extends ActionBarActivity {
 							}
 						}
 				        
-						Button btnReview = (Button)v.findViewById(R.id.buttonReview);
+						/*Button btnReview = (Button)v.findViewById(R.id.buttonReview);
 						btnReview.setContentDescription(i+"");
 						btnReview.setOnClickListener(new OnClickListener() {
 							
@@ -192,7 +192,7 @@ public class DoctorActivity extends ActionBarActivity {
 								Intent intent = new Intent(DoctorActivity.this,ReviewsActivity.class);
 								startActivity(intent);
 							}
-						});
+						});*/
 						
 						Button btnmap = (Button)v.findViewById(R.id.buttonLocation);
 						btnmap.setContentDescription(i+"");
