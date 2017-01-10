@@ -99,8 +99,6 @@ public class MainActivity extends ActionBarActivity {
 
 	        new loadNewsTask().execute(true);
 
-
-
 	        adapter = new MainAdapter(getApplicationContext(), newsArray);
 	        GridView gridview = (GridView)findViewById(R.id.gridView1);
 	        gridview.setAdapter(adapter);

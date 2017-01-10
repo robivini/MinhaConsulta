@@ -1,10 +1,16 @@
 package com.minhaConsulta;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
+
+import appconfig.ConstValue;
 
 public class CommonFunctions {
+	public SharedPreferences settings;
 	public void menuItemClick(Activity act,int id){
 		Intent intent = null;
 		String shareurl = "https://play.google.com/store/apps/details?id=" + act.getPackageName();
@@ -35,6 +41,16 @@ public class CommonFunctions {
 				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(shareurl));
 				act.startActivity(browserIntent);
 				break;
+			case R.id.action_sair:
+
+				settings = act.getSharedPreferences(ConstValue.MAIN_PREF, Context.MODE_PRIVATE);
+				SharedPreferences.Editor editor = settings.edit();
+				editor.clear();
+				editor.commit();
+				intent = new Intent(act,MainActivity.class);
+				break;
+
+
 			default:
 				break;
 		}

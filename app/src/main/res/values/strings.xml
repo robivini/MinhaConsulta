@@ -139,4 +139,5 @@
     <string name="txtsemcidade">Esta cidade ainda não possui essa Especialidade!</string>
     <string name="txtcity">Esta cidade ainda não possui essa especialidade!</string>
     <string name="txtindique">Indique alguém!</string>
+    <string name="action_sair">Sair</string>
 </resources>

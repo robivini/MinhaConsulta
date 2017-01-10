@@ -35,10 +35,10 @@ public class ServiceChargeAdapter extends BaseAdapter implements ImageGetter {
 	public ServiceChargeAdapter(Activity context, ArrayList<InfoRowdata> arraylist,String Discount){
 		this.activity = context;
 		discount = Discount;
-		txtTotal  = (TextView)activity.findViewById(R.id.textTotal);
-		txtDiscount = (TextView)activity.findViewById(R.id.textDiscount);
-		txtNetAmount = (TextView)activity.findViewById(R.id.textNetAmount);
-		txtFees = (TextView)activity.findViewById(R.id.textFees);
+//		txtTotal  = (TextView)activity.findViewById(R.id.textTotal);
+//		txtDiscount = (TextView)activity.findViewById(R.id.textDiscount);
+//		txtNetAmount = (TextView)activity.findViewById(R.id.textNetAmount);
+//		txtFees = (TextView)activity.findViewById(R.id.textFees);
 		postItems = arraylist;
 		settings = context.getSharedPreferences(PREFS_NAME, 0);		
 		

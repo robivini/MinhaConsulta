@@ -94,23 +94,23 @@ public class Appointment2Activity extends ActionBarActivity {
 			}
 		});
 
-		TextView txtFees = (TextView)findViewById(R.id.textFees);
+//		TextView txtFees = (TextView)findViewById(R.id.textFees);
 		//txtFees.setText(ConstValue.selected_doctor.get("dr_fees"));
-		txtFees.setText(clinic_fees);
+//		txtFees.setText(clinic_fees);
 
 		serviceArray = new ArrayList<InfoRowdata>();
 
-		txtDiscount = (TextView)findViewById(R.id.textDiscount);
-		TextView txtDiscountPer = (TextView)findViewById(R.id.textDisPer);
-		txtDiscountPer.setText(clinic_discount+"%");
-		txtDiscount.setText((Double.parseDouble(clinic_fees) * Double.parseDouble(clinic_discount) / 100) + "");
+//		txtDiscount = (TextView)findViewById(R.id.textDiscount);
+//		TextView txtDiscountPer = (TextView)findViewById(R.id.textDisPer);
+//		txtDiscountPer.setText(clinic_discount+"%");
+//		txtDiscount.setText((Double.parseDouble(clinic_fees) * Double.parseDouble(clinic_discount) / 100) + "");
 
 
-		txtNetAmount = (TextView)findViewById(R.id.textNetAmount);
-		txtTotal = (TextView)findViewById(R.id.textTotal);
-		txtTotal.setText(clinic_fees);
+//		txtNetAmount = (TextView)findViewById(R.id.textNetAmount);
+//		txtTotal = (TextView)findViewById(R.id.textTotal);
+//		txtTotal.setText(clinic_fees);
 
-		txtNetAmount.setText((Double.parseDouble(clinic_fees) - Double.parseDouble(txtDiscount.getText().toString()))+"");
+//		txtNetAmount.setText((Double.parseDouble(clinic_fees) - Double.parseDouble(txtDiscount.getText().toString()))+"");
 
 		listview = (ListView)findViewById(R.id.listView1);
 		adapter = new ServiceChargeAdapter(Appointment2Activity.this,serviceArray,clinic_discount);
