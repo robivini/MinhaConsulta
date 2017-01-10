@@ -45,11 +45,11 @@ public class MainActivity extends ActionBarActivity {
 	public ConnectionDetector cd;
 	ArrayList<HashMap<String, String>> newsArray;
 	MainAdapter adapter;
-	
+
 	AsyncTask<Void, Void, Void> mRegisterTask;
 	public static String email;
 
-
+	ArrayList<HashMap<String, String>> doctoryarray;
 
 	private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 	private static final String TAG = "MainActivity";
@@ -115,11 +115,11 @@ public class MainActivity extends ActionBarActivity {
 					startActivity(intent);
 				}
 
-				
+
 			});
-	        
+
 	        //if(settings.getBoolean("REGISTER", false)){
-	        	
+
 	        //}else{
 
 
@@ -132,8 +132,10 @@ public class MainActivity extends ActionBarActivity {
 	public class loadNewsTask extends AsyncTask<Boolean, Void, ArrayList<HashMap<String, String>>> {
 
 		JSONParser jParser;
+		JSONParser jParser2;
 		JSONObject json;
-		
+		JSONObject json2;
+
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
@@ -145,8 +147,8 @@ public class MainActivity extends ActionBarActivity {
 			// TODO Auto-generated method stub
 			if (result!=null) {
 				//adapter.notifyDataSetChanged();
-				
-			}	
+
+			}
 			try {
 				settings.edit().putString(ConstValue.PREFS_MAIN_CAT,ObjectSerializer.serialize(newsArray)).commit();
 			} catch (IOException e) {
@@ -169,23 +171,27 @@ public class MainActivity extends ActionBarActivity {
 			super.onCancelled(result);
 		}
 
-	
+
 		@Override
 		protected ArrayList<HashMap<String, String>> doInBackground(
 				Boolean... params) {
 			// TODO Auto-generated method stub
-			
+
 			try {
 				jParser = new JSONParser();
-				
+				jParser2 = new JSONParser();
+
 				if(cd.isConnectingToInternet())
 				{
+					String query = "";
 					json = jParser.getJSONFromUrl(ConstValue.JSON_MAINCAT);
+
+
 					if (json.has("data")) {
-						
-					
+
+
 					if(json.get("data") instanceof JSONArray){
-						
+
 					JSONArray menus = json.getJSONArray("data");
 					if(menus!=null)
 					{
@@ -197,33 +203,67 @@ public class MainActivity extends ActionBarActivity {
 	  							map2.put("title", d.getString("title"));
 	  							map2.put("icon", d.getString("icon"));
 	  							map2.put("iconpath", d.getString("iconpath"));
-	  							
-							newsArray.add(map2);
+
+
+							Log.i("222222", String.valueOf(map2));
+
+							ConstValue.selected_category = map2;
+
+							json2 = jParser2.getJSONFromUrl(ConstValue.JSON_DR_LIST+"&cat_id="+ConstValue.selected_category.get("id"));
+
+							Log.i("", String.valueOf(json2));
+
+										newsArray.add(map2);
+
 						}
-					}	
-					
 					}
-					
+
+					}
+
 					}
 				}else
 				{
 					Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_intent_connection), Toast.LENGTH_LONG).show();
 				}
-					
+
 			jParser = null;
 			json = null;
-			
+
 				} catch (Exception e) {
 					// TODO: handle exception
-					
+
 					return null;
 				}
 			return newsArray;
 		}
 
 	}
-    
-    @Override
+
+	private void loadDrTask() {
+		doctoryarray = new ArrayList<HashMap<String,String>>();
+		try {
+			doctoryarray = (ArrayList<HashMap<String,String>>) ObjectSerializer.deserialize(settings.getString("doctors"+ConstValue.selected_category.get("id"), ObjectSerializer.serialize(new ArrayList<HashMap<String,String>>())));
+			Log.i("__________",doctoryarray.toString());
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
+		// TODO Auto-generated method stub
+		if (result != null) {
+			//adapter.notifyDataSetChanged();
+		}
+		try {
+			settings.edit().putString("doctors" + ConstValue.selected_category.get("id"), ObjectSerializer.serialize(doctoryarray)).apply();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
@@ -276,5 +316,5 @@ public class MainActivity extends ActionBarActivity {
 		}
 		return true;
 	}
-    
+
 }

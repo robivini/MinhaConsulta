@@ -3,6 +3,7 @@ package com.minhaConsulta;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -44,7 +46,13 @@ public class ScreenSlidePageFragment extends Fragment {
                 if(times_Array.length() > 0){
                     for (int i = 0; i < times_Array.length(); i++) {
                         JSONObject o = times_Array.getJSONObject(i);
-                        if(o.getString("day").equalsIgnoreCase( ((AppointmentActivity)getActivity()).changeDateTitle(args.getInt("day")))){
+                        String aux1 = o.getString("day");
+                        String aux2 = ((AppointmentActivity)getActivity()).changeDateTitle(args.getInt("day"));
+                        aux1 = removeAcentos(aux1);
+                        aux2 = removeAcentos(aux2);
+                        Log.i("___________",aux1);
+                        Log.i("__________1",aux2);
+                        if(aux1.equalsIgnoreCase( aux2 )){
                             HashMap<String, String> map = new HashMap<String, String>();
                             map.put("day", o.getString("day"));
                             map.put("during", o.getString("during"));
@@ -85,6 +93,14 @@ public class ScreenSlidePageFragment extends Fragment {
             }
         });
         return rootView;
+    }
+
+    public String removeAcentos(String str) {
+
+        str = Normalizer.normalize(str, Normalizer.Form.NFD);
+        str = str.replaceAll("[^\\p{ASCII}]", "");
+        return str;
+
     }
 
 }

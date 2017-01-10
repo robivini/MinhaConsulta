@@ -1,9 +1,12 @@
 package com.minhaConsulta;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,6 +57,7 @@ public class DoctorActivity extends ActionBarActivity {
 	HashMap<String, String> j_doctor;
 	public SharedPreferences settings;
 	public ConnectionDetector cd;
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -103,16 +107,16 @@ public class DoctorActivity extends ActionBarActivity {
 //			ratingbar.setRating(Float.parseFloat((j_doctor.get("avg"))));
 //			}
 			//txtDescription.setText(Html.fromHtml(j_doctor.get("dr_description").toString()));
-			WebSettings wevsettings = webview.getSettings();
-			wevsettings.setDefaultTextEncodingName("utf-8");
+//			WebSettings wevsettings = webview.getSettings();
+//			wevsettings.setDefaultTextEncodingName("utf-8");
 			//webview.loadData("<style> *{ font-size : 12px; } a{ text-decoration:none; color : #000000; } h1,h2,h3,h4,h5,h6 { font-size : 16px;  }</style>"+j_doctor.get("dr_description"), "text/html; charset=utf-8", null);
-			 try {
-				webview.loadData(URLEncoder.encode("<style> *{ font-size : 12px; } a{ text-decoration:none; color : #000000; } h1,h2,h3,h4,h5,h6 { font-size : 16px;  }</style>"+j_doctor.get("dr_description"), "utf-8").replaceAll("\\+", "%20"), "text/html; charset=utf-8", "UTF-8");
-			} catch (UnsupportedEncodingException e1) {
+//			 try {
+//				webview.loadData(URLEncoder.encode("<style> *{ font-size : 12px; } a{ text-decoration:none; color : #000000; } h1,h2,h3,h4,h5,h6 { font-size : 16px;  }</style>"+j_doctor.get("dr_description"), "utf-8").replaceAll("\\+", "%20"), "text/html; charset=utf-8", "UTF-8");
+//			} catch (UnsupportedEncodingException e1) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			txtExpr.setText(j_doctor.get("dr_experiance")+getResources().getString(R.string.yr_expr));
+//				e1.printStackTrace();
+//			}
+			txtExpr.setText(j_doctor.get("dr_experiance")+" "+getResources().getString(R.string.yr_expr));
 			//txtFees.setText(j_doctor.get("dr_fees")+getResources().getString(R.string.currency));
 			txtSpeciality.setText(j_doctor.get("dr_speciality"));
 			

@@ -214,10 +214,10 @@ public class ConfirmActivity extends ActionBarActivity {
 		protected void onPostExecute(String result) {
 			if(result!=null){
 				Toast.makeText(getApplicationContext(), "Error :"+result, Toast.LENGTH_LONG).show();
-				//AlertDialogManager am = new AlertDialogManager(); 
+				//AlertDialogManager am = new AlertDialogManager();
 				//am.showAlertDialog(getApplicationContext(), "Error", result, true);
 			}else{
-				
+
 				if(finalData!=null){
 					SmsManager smsManager = SmsManager.getDefault();
                     try {

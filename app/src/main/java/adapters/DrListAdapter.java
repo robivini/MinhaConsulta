@@ -101,13 +101,13 @@ public class DrListAdapter extends BaseAdapter implements ImageGetter {
 				TextView txttitle = (TextView)convertView.findViewById(R.id.textView1);
 				txttitle.setText(map.get("dr_name"));
 				RatingBar ratingbar = (RatingBar)convertView.findViewById(R.id.ratingBar1);
-				ratingbar.setRating(0);
-				if(!map.get("avg").equalsIgnoreCase("") && map.get("avg")!=null  && !map.get("avg").equalsIgnoreCase("null")){
-				ratingbar.setRating(Float.parseFloat(map.get("avg")));
-				}
+//				ratingbar.setRating(0);
+//				if(!map.get("avg").equalsIgnoreCase("") && map.get("avg")!=null  && !map.get("avg").equalsIgnoreCase("null")){
+//				ratingbar.setRating(Float.parseFloat(map.get("avg")));
+//				}
 				
-				TextView txtfee = (TextView)convertView.findViewById(R.id.TextFee);
-				txtfee.setVisibility(View.GONE);
+				//TextView txtfee = (TextView)convertView.findViewById(R.id.TextFee);
+				//txtfee.setVisibility(View.GONE);
 				
 				TextView txtaddress = (TextView)convertView.findViewById(R.id.textAddress);
 				txtaddress.setVisibility(View.GONE);
@@ -120,10 +120,10 @@ public class DrListAdapter extends BaseAdapter implements ImageGetter {
 						txtaddress.setText(clinics.getJSONObject(0).getString("cl_address"));
 						txtaddress.setVisibility(View.VISIBLE);
 						
-						if(!clinics.getJSONObject(0).getString("cl_fees").equalsIgnoreCase("")){
-							txtfee.setText(clinics.getJSONObject(0).getString("cl_fees")+" Rs.");
-							txtfee.setVisibility(View.VISIBLE);
-						}
+						//if(!clinics.getJSONObject(0).getString("cl_fees").equalsIgnoreCase("")){
+						//	txtfee.setText(clinics.getJSONObject(0).getString("cl_fees")+" Rs.");
+						//	txtfee.setVisibility(View.VISIBLE);
+						//}
 						if(!clinics.getJSONObject(0).getString("cl_location").equalsIgnoreCase("")){
 							txtlocation.setText(clinics.getJSONObject(0).getString("cl_location"));
 							txtlocation.setVisibility(View.VISIBLE);
@@ -154,7 +154,7 @@ public class DrListAdapter extends BaseAdapter implements ImageGetter {
 				
 				
 				TextView txtExp = (TextView)convertView.findViewById(R.id.textExp);
-				txtExp.setText(map.get("dr_experiance")+" yr exp.");
+				txtExp.setText(map.get("dr_experiance")+" ano(s) exp.");
 				
 				ImageView imgIcon = (ImageView)convertView.findViewById(R.id.imageView1);
 				ImageLoader.getInstance().displayImage(map.get("cover_path"), imgIcon, options, animateFirstListener);

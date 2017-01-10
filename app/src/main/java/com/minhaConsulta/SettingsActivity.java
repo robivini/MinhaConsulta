@@ -53,8 +53,8 @@ public class SettingsActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_settings);
 		settings = getSharedPreferences(ConstValue.MAIN_PREF, 0);
 		 cd=new ConnectionDetector(this);
-		txtLocation = (EditText)findViewById(R.id.editCity);
-		txtLocation.setOnClickListener(new OnClickListener() {
+//		txtLocation = (EditText)findViewById(R.id.editCity);
+/*		txtLocation.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -65,8 +65,7 @@ public class SettingsActivity extends ActionBarActivity {
 			}
 		});
 		
-		txtLocation.setText(settings.getString("selected_city", ""));
-        
+		txtLocation.setText(settings.getString("selected_city", ""));*/
         btnNewslatter = (ToggleButton)findViewById(R.id.toggleButton2);
         btnNotification = (ToggleButton)findViewById(R.id.toggleButton1);
         if(settings.getString("notification", "0").equalsIgnoreCase("1")){

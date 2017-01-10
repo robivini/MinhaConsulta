@@ -300,7 +300,7 @@ public class Appointment2Activity extends ActionBarActivity {
 
 		JSONParser jParser;
 		JSONObject json;
-		
+
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
@@ -321,7 +321,7 @@ public class Appointment2Activity extends ActionBarActivity {
 				e.printStackTrace();
 			}
 			adapter.notifyDataSetChanged();
-			
+
 			ViewGroup.LayoutParams params = listview.getLayoutParams();
 			float d = getApplicationContext().getResources().getDisplayMetrics().density;
 	        params.height = (int)(serviceArray.size() * d * 45);

@@ -127,14 +127,14 @@ public class DoctorListActivity extends ActionBarActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.listdoctor, menu);
-	    MenuItem searchItem = menu.findItem(R.id.action_search);
-	    SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+	    //MenuItem searchItem = menu.findItem(R.id.action_search);
+	    //SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
 		
-		 SearchManager searchManager =
-		           (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		 //SearchManager searchManager =
+		  //         (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 		    
-		    searchView.setSearchableInfo(
-		            searchManager.getSearchableInfo(getComponentName()));
+		   // searchView.setSearchableInfo(
+		   //         searchManager.getSearchableInfo(getComponentName()));
 		
 		return true;
 	}

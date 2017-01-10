@@ -30,68 +30,78 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_launcher" />
 
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="55dp"
-                    android:layout_below="@+id/imageBanner"
-                    android:layout_marginTop="-55dp"
-                    android:alpha="0.5"
-                    android:background="#000000"
-                    android:orientation="vertical"
-                    android:padding="10dp" >
-
-                    <LinearLayout
-                        android:id="@+id/linearLayout1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginLeft="80dp"
-                         >
-
-                        <TextView
-                            android:id="@+id/textDrName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Nome:"
-                            android:textColor="#ffffff" />
-
-                        <TextView
-                            android:id="@+id/textDrDegree"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="MBBS"
-                            android:textColor="#ffffff" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/textDrExp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignTop="@+id/linearLayout1"
-                        android:text="0 Anos Exp."
-                        android:textColor="#ffffff" />
-                </RelativeLayout>
-                <com.pkmmte.view.CircularImageView
-                     android:id="@+id/imageView1"
-                     android:layout_width="85dp"
-        android:layout_height="85dp"
-        app:border="true"
-        app:border_color="#EEEEEE"
-        app:border_width="4dp"
-        app:shadow="true"
-        android:layout_marginTop="120dp"
-                    />
                 <!--  <ImageView
                     android:id="@+id/imageView1"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
                     android:alpha="1"
                     android:src="@drawable/ic_launcher"
-                    
+
                     android:layout_marginTop="95dp"
                     android:layout_marginLeft="5dp"
                      />-->
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="00.5"
+                android:background="#000000"
+                android:orientation="vertical"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="80dp"
+                     >
+
+                    <TextView
+                        android:id="@+id/textDrName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nome:"
+                        android:textColor="#ffffff"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="5dp" />
+
+                    <TextView
+                        android:id="@+id/textDrDegree"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="MBBS"
+                        android:textColor="#ffffff"
+                        android:layout_margin="5dp" />
+
+                </LinearLayout>
+
+                <com.pkmmte.view.CircularImageView
+                     android:id="@+id/imageView1"
+                     android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:border="true"
+        app:border_color="#EEEEEE"
+        app:border_width="4dp"
+        app:shadow="true"
+                    android:layout_alignParentStart="true"
+                    android:elevation="6dp"
+                    android:alpha="1"
+                    android:layout_marginLeft="15dp" />
+
+                <TextView
+                    android:id="@+id/textDrExp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 Anos Exp."
+                    android:textColor="#ffffff"
+                    android:padding="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_alignBottom="@+id/linearLayout1"
+                    android:layout_alignParentEnd="true" />
             </RelativeLayout>
 
             <LinearLayout
@@ -147,12 +157,6 @@
                         android:layout_weight="1"
                         android:text="Kidney" />
                 </LinearLayout>
-
-                <WebView
-                    android:id="@+id/webView1"
-                    android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="15dp" />
 
                 <TextView
                     android:id="@+id/textDescription"
