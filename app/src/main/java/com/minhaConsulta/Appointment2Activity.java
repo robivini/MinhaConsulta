@@ -50,17 +50,17 @@ import util.ObjectSerializer;
 public class Appointment2Activity extends ActionBarActivity {
 	TextView textDesc;
 	ProgressDialog dialog;
-	
+
 	String clinic_id, dr_id, app_date, time, day, clinic_fees, clinic_discount;
 	public SharedPreferences settings;
 	public ConnectionDetector cd;
-	
+
 	ServiceChargeAdapter adapter;
 	ArrayList<InfoRowdata> serviceArray;
 	ListView listview;
 	//ArrayList<InfoRowdata> infodata;
 	TextView txtDiscount, txtTotal, txtNetAmount;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -69,11 +69,11 @@ public class Appointment2Activity extends ActionBarActivity {
 		cd=new ConnectionDetector(this);
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
-		
+
 		Bundle b = getIntent().getExtras();
-		
-		
-		
+
+
+
 		clinic_id = b.getString("clinic_id");
 		clinic_fees = b.getString("cl_fees");
 		clinic_discount = b.getString("cl_discount");
@@ -81,54 +81,54 @@ public class Appointment2Activity extends ActionBarActivity {
 		app_date = b.getString("app_date");
 		time = b.getString("time");
 		day = b.getString("day");
-		
+
 		textDesc = (TextView)findViewById(R.id.editDescription);
-		
+
 		Button btncontinue = (Button)findViewById(R.id.button1);
 		btncontinue.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				new registerTask().execute(true);	
+				new registerTask().execute(true);
 			}
 		});
-		
+
 		TextView txtFees = (TextView)findViewById(R.id.textFees);
 		//txtFees.setText(ConstValue.selected_doctor.get("dr_fees"));
 		txtFees.setText(clinic_fees);
-		
+
 		serviceArray = new ArrayList<InfoRowdata>();
-		
+
 		txtDiscount = (TextView)findViewById(R.id.textDiscount);
 		TextView txtDiscountPer = (TextView)findViewById(R.id.textDisPer);
 		txtDiscountPer.setText(clinic_discount+"%");
 		txtDiscount.setText((Double.parseDouble(clinic_fees) * Double.parseDouble(clinic_discount) / 100) + "");
-		
-		
+
+
 		txtNetAmount = (TextView)findViewById(R.id.textNetAmount);
 		txtTotal = (TextView)findViewById(R.id.textTotal);
 		txtTotal.setText(clinic_fees);
-		
+
 		txtNetAmount.setText((Double.parseDouble(clinic_fees) - Double.parseDouble(txtDiscount.getText().toString()))+"");
-		
+
 		listview = (ListView)findViewById(R.id.listView1);
 		adapter = new ServiceChargeAdapter(Appointment2Activity.this,serviceArray,clinic_discount);
 		listview.setAdapter(adapter);
-		
+
 		listview.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
+									int position, long id) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 		new serviceLoadTask().execute(true);
 	}
-	
-	
+
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -142,19 +142,19 @@ public class Appointment2Activity extends ActionBarActivity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-        CommonFunctions common = new CommonFunctions();
-        common.menuItemClick(Appointment2Activity.this, id);
-        return super.onOptionsItemSelected(item);
+		CommonFunctions common = new CommonFunctions();
+		common.menuItemClick(Appointment2Activity.this, id);
+		return super.onOptionsItemSelected(item);
 	}
-	
+
 	class registerTask extends AsyncTask<Boolean, Void, String> {
 		String description;
 		JSONObject data;
 		double totalAmount;
 		@Override
 		protected void onPreExecute() {
-			dialog = ProgressDialog.show(Appointment2Activity.this, "", 
-                    getResources().getString(R.string.loading_wait), true);
+			dialog = ProgressDialog.show(Appointment2Activity.this, "",
+					getResources().getString(R.string.loading_wait), true);
 			description = textDesc.getText().toString();
 			totalAmount = Double.parseDouble(ConstValue.selected_doctor.get("dr_fees"));
 			super.onPreExecute();
@@ -168,88 +168,89 @@ public class Appointment2Activity extends ActionBarActivity {
 		@Override
 		protected String doInBackground(Boolean... params) {
 			// TODO Auto-generated method stub
-		
+
 			String responseString = null;
-			 
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(ConstValue.JSON_ADD_APPOINTMENT);
-            //if (getEmailId()==null) {
-            //	Toast.makeText(getApplicationContext(),"Create new Account Please",Toast.LENGTH_LONG).show();
-            //	finish();
+
+			HttpClient httpclient = new DefaultHttpClient();
+			HttpPost httppost = new HttpPost(ConstValue.JSON_ADD_APPOINTMENT);
+			//if (getEmailId()==null) {
+			//	Toast.makeText(getApplicationContext(),"Create new Account Please",Toast.LENGTH_LONG).show();
+			//	finish();
 			//}
 
-            try {
-            
-            	 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+			try {
 
-            	 for(int i=0;i<serviceArray.size();i++)
-                 {
-                     if (serviceArray.get(i).isclicked)
-                     {
-                    	 nameValuePairs.add(new BasicNameValuePair("services[]", serviceArray.get(i).getServiceId() ));
-                    	 totalAmount = totalAmount + Double.parseDouble(serviceArray.get(i).getAmount());
-                     }
-                 }
-            	 nameValuePairs.add(new BasicNameValuePair("clinic_id", clinic_id));
-            	 nameValuePairs.add(new BasicNameValuePair("dr_id", dr_id));
-            	 nameValuePairs.add(new BasicNameValuePair("app_date", app_date));
-            	 nameValuePairs.add(new BasicNameValuePair("time", time));
-            	 nameValuePairs.add(new BasicNameValuePair("day", day));
-            	 nameValuePairs.add(new BasicNameValuePair("phone", settings.getString("user_phone","")));
-            	 nameValuePairs.add(new BasicNameValuePair("description",description ));
-            	 nameValuePairs.add(new BasicNameValuePair("user_id", settings.getString("user_id", "")));
-            	 
-            	 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
+				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 
- 
-                // Making server call
-                HttpResponse response = httpclient.execute(httppost);
-                HttpEntity r_entity = response.getEntity();
-                int statusCode = response.getStatusLine().getStatusCode();
-                if (statusCode == 200) {
-                    // Server response
-                	InputStream is = r_entity.getContent();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(
-        					is, "iso-8859-1"), 8);
-        			StringBuilder sb = new StringBuilder();
-        			String line = null;
-        			while ((line = reader.readLine()) != null) {
-        				sb.append(line + "\n");
-        			}
-        			is.close();
-        			String json = sb.toString();
-        			JSONObject jObj = new JSONObject(json);
-        			if (jObj.getString("responce").equalsIgnoreCase("success")) {
-	        			data = jObj.getJSONObject("data");
+				for(int i=0;i<serviceArray.size();i++)
+				{
+					if (serviceArray.get(i).isclicked)
+					{
+						nameValuePairs.add(new BasicNameValuePair("services[]", serviceArray.get(i).getServiceId() ));
+						totalAmount = totalAmount + Double.parseDouble(serviceArray.get(i).getAmount());
+					}
+				}
+				nameValuePairs.add(new BasicNameValuePair("clinic_id", clinic_id));
+				nameValuePairs.add(new BasicNameValuePair("dr_id", dr_id));
+				nameValuePairs.add(new BasicNameValuePair("app_date", app_date));
+				nameValuePairs.add(new BasicNameValuePair("time", time));
+				nameValuePairs.add(new BasicNameValuePair("day", day));
+				nameValuePairs.add(new BasicNameValuePair("phone", settings.getString("user_phone","")));
+				nameValuePairs.add(new BasicNameValuePair("description",description ));
+				nameValuePairs.add(new BasicNameValuePair("user_id", settings.getString("user_id", "")));
 
-	        			
-        			}else{
-        				responseString = jObj.getString("data"); 
-        			}
-                } else {
-                    responseString = "Error occurred! Http Status Code: "
-                            + statusCode;
-                }
- 
-            } catch (ClientProtocolException e) {
-                responseString = e.toString();
-            } catch (IOException e) {
-                responseString = e.toString();
-            }catch (JSONException e) {
-    			Log.e("JSON Parser", "Error parsing data " + e.toString());
-    		}
- 
-            return responseString;
-			
-			
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
+
+
+				// Making server call
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity r_entity = response.getEntity();
+				int statusCode = response.getStatusLine().getStatusCode();
+
+				if (statusCode == 200) {
+					// Server response
+					InputStream is = r_entity.getContent();
+					BufferedReader reader = new BufferedReader(new InputStreamReader(
+							is, "iso-8859-1"), 8);
+					StringBuilder sb = new StringBuilder();
+					String line = null;
+					while ((line = reader.readLine()) != null) {
+						sb.append(line + "\n");
+					}
+					is.close();
+					String json = sb.toString();
+					JSONObject jObj = new JSONObject(json);
+					if (jObj.getString("responce").equalsIgnoreCase("success")) {
+						data = jObj.getJSONObject("data");
+
+
+					}else{
+						responseString = jObj.getString("data");
+					}
+				} else {
+					responseString = "Error occurred! Http Status Code: "
+							+ statusCode;
+				}
+
+			} catch (ClientProtocolException e) {
+				responseString = e.toString();
+			} catch (IOException e) {
+				responseString = e.toString();
+			}catch (JSONException e) {
+				Log.e("JSON Parser", "Error parsing data " + e.toString());
+			}
+
+			return responseString;
+
+
 		}
-		
+
 
 		@Override
 		protected void onPostExecute(String result) {
 			if(result!=null){
 				Toast.makeText(getApplicationContext(), "Error :"+result, Toast.LENGTH_LONG).show();
-				//AlertDialogManager am = new AlertDialogManager(); 
+				//AlertDialogManager am = new AlertDialogManager();
 				//am.showAlertDialog(getApplicationContext(), "Error", result, true);
 			}else{
 				/*try {
@@ -267,23 +268,23 @@ public class Appointment2Activity extends ActionBarActivity {
 				if (data!=null){
 					try {
 						if (!data.getString("app_id").equalsIgnoreCase("")) {
-                            settings.edit().putString("app_id", data.getString("app_id")).apply();
-                            settings.edit().putString("reg_id", data.getString("reg_id")).apply();
-                            settings.edit().putString("totalamount", String.valueOf(totalAmount)).apply();
-                            settings.edit().putString("app_date", app_date).apply();
-                            settings.edit().putString("app_time", time).apply();
-                            //gcmAppRegister();
+							settings.edit().putString("app_id", data.getString("app_id")).apply();
+							settings.edit().putString("reg_id", data.getString("reg_id")).apply();
+							settings.edit().putString("totalamount", String.valueOf(totalAmount)).apply();
+							settings.edit().putString("app_date", app_date).apply();
+							settings.edit().putString("app_time", time).apply();
+							//gcmAppRegister();
 							Intent intent = new Intent(Appointment2Activity.this,ConfirmActivity.class);
 							//intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 							startActivity(intent);
-                        }
+						}
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
 				}
-				
 
-				
+
+
 			}
 			dialog.dismiss();
 		}
@@ -291,11 +292,11 @@ public class Appointment2Activity extends ActionBarActivity {
 		protected void onCancelled() {
 			// TODO Auto-generated method stub
 		}
-		
+
 	}
 
 
-	
+
 	public class serviceLoadTask extends AsyncTask<Boolean, Void, ArrayList<HashMap<String, String>>> {
 
 		JSONParser jParser;
@@ -312,8 +313,8 @@ public class Appointment2Activity extends ActionBarActivity {
 			// TODO Auto-generated method stub
 			if (result!=null) {
 				//adapter.notifyDataSetChanged();
-				
-			}	
+
+			}
 			try {
 				settings.edit().putString(ConstValue.PREF_SERV_CHARGE+clinic_id,ObjectSerializer.serialize(serviceArray)).apply();
 			} catch (IOException e) {
@@ -324,10 +325,10 @@ public class Appointment2Activity extends ActionBarActivity {
 
 			ViewGroup.LayoutParams params = listview.getLayoutParams();
 			float d = getApplicationContext().getResources().getDisplayMetrics().density;
-	        params.height = (int)(serviceArray.size() * d * 45);
-	        listview.setLayoutParams(params);
-	        listview.requestLayout();
-	        
+			params.height = (int)(serviceArray.size() * d * 45);
+			listview.setLayoutParams(params);
+			listview.requestLayout();
+
 			super.onPostExecute(result);
 		}
 
@@ -343,59 +344,59 @@ public class Appointment2Activity extends ActionBarActivity {
 			super.onCancelled(result);
 		}
 
-	
+
 		@Override
 		protected ArrayList<HashMap<String, String>> doInBackground(
 				Boolean... params) {
 			// TODO Auto-generated method stub
-			
+
 			try {
 				jParser = new JSONParser();
-				
+
 				if(cd.isConnectingToInternet())
 				{
 					json = jParser.getJSONFromUrl(ConstValue.JSON_GET_SERVICE_CHARGES+"&cl_id="+clinic_id);
 					if (json.has("data")) {
-						
-					
-					if(json.get("data") instanceof JSONArray){
-						
-					JSONArray menus = json.getJSONArray("data");
-					if(menus!=null)
-					{
-						serviceArray.clear();
-						for (int i = 0; i < menus.length(); i++) {
-							JSONObject d = menus.getJSONObject(i);
+
+
+						if(json.get("data") instanceof JSONArray){
+
+							JSONArray menus = json.getJSONArray("data");
+							if(menus!=null)
+							{
+								serviceArray.clear();
+								for (int i = 0; i < menus.length(); i++) {
+									JSONObject d = menus.getJSONObject(i);
 //							HashMap<String, String> map2 = new HashMap<String, String>();
 //	  							map2.put("id", d.getString("id"));
 //	  							map2.put("clinic_id", d.getString("clinic_id"));
 //	  							map2.put("dr_id", d.getString("dr_id"));
 //	  							map2.put("service", d.getString("service"));
 //	  							map2.put("charge", d.getString("charge"));
-	  							
-							serviceArray.add(new InfoRowdata(false, i, d.getString("id"), d.getString("charge"), d.getString("service")));
+
+									serviceArray.add(new InfoRowdata(false, i, d.getString("id"), d.getString("charge"), d.getString("service")));
+								}
+							}
+
 						}
-					}	
-					
-					}
-					
+
 					}
 				}else
 				{
 					Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_intent_connection), Toast.LENGTH_LONG).show();
 				}
-					
-			jParser = null;
-			json = null;
-			
-				} catch (Exception e) {
-					// TODO: handle exception
-					
-					return null;
-				}
+
+				jParser = null;
+				json = null;
+
+			} catch (Exception e) {
+				// TODO: handle exception
+
+				return null;
+			}
 			return null;
 		}
 
 	}
-	
+
 }

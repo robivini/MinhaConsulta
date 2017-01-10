@@ -78,7 +78,7 @@
     <string name="Why_you_wont_appotintment">Motivos da consulta:</string>
     <string name="Continue_and_confirm">Continuar e Confirmar</string>
     <string name="confirm_note">Nota: Esse sistema irá enviar para você um codigo de confirmação no seu numero do seu celular. Confirme o código. O sms não será cobrado.</string>
-    <string name="type_code">Digite na área de texto abaixo o código recebido: </string>
+    <string name="type_code">Digite na área de texto abaixo o seguinte código: </string>
     <string name="code">CÓDIGO</string>
     <string name="code_here">CÓDIGO AQUI</string>
     <string name="Complete_Appointment">Consulta Completada</string>

@@ -50,8 +50,6 @@ public class ScreenSlidePageFragment extends Fragment {
                         String aux2 = ((AppointmentActivity)getActivity()).changeDateTitle(args.getInt("day"));
                         aux1 = removeAcentos(aux1);
                         aux2 = removeAcentos(aux2);
-                        Log.i("___________",aux1);
-                        Log.i("__________1",aux2);
                         if(aux1.equalsIgnoreCase( aux2 )){
                             HashMap<String, String> map = new HashMap<String, String>();
                             map.put("day", o.getString("day"));

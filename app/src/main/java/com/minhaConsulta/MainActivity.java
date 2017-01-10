@@ -204,14 +204,10 @@ public class MainActivity extends ActionBarActivity {
 	  							map2.put("icon", d.getString("icon"));
 	  							map2.put("iconpath", d.getString("iconpath"));
 
-
-							Log.i("222222", String.valueOf(map2));
-
 							ConstValue.selected_category = map2;
 
 							json2 = jParser2.getJSONFromUrl(ConstValue.JSON_DR_LIST+"&cat_id="+ConstValue.selected_category.get("id"));
 
-							Log.i("", String.valueOf(json2));
 
 										newsArray.add(map2);
 
@@ -243,7 +239,6 @@ public class MainActivity extends ActionBarActivity {
 		doctoryarray = new ArrayList<HashMap<String,String>>();
 		try {
 			doctoryarray = (ArrayList<HashMap<String,String>>) ObjectSerializer.deserialize(settings.getString("doctors"+ConstValue.selected_category.get("id"), ObjectSerializer.serialize(new ArrayList<HashMap<String,String>>())));
-			Log.i("__________",doctoryarray.toString());
 		}catch (IOException e) {
 			e.printStackTrace();
 		}

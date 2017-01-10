@@ -102,7 +102,6 @@ public class Doutor extends ActionBarActivity {
             e.printStackTrace();
         }
 
-        Log.i("$$$$$$$$", String.valueOf(doctoryarray));
 
 
         new Doutor.loadDrListTask().execute(true);
