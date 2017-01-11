@@ -238,11 +238,11 @@ public class ConfirmActivity extends ActionBarActivity {
 
 							String user_message = getResources().getString(R.string.sms_string_for_user);
 
-							user_message.replace("#appno#",finalData.getString("id"))
-									.replace("#drname#",finalData.getString("dr_name"))
-									.replace("#date",finalData.getString("app_date"))
-									.replace("#time", finalData.getString("time"))
-									.replace("#amount",settings.getString("totalamount", ""));
+							user_message = user_message.replaceAll("#appno#",finalData.getString("id"))
+									.replaceAll("#drname#",finalData.getString("dr_name"))
+									.replaceAll("#date#",finalData.getString("app_date"))
+									.replaceAll("#time#", finalData.getString("time"))
+									.replaceAll("#amount#",settings.getString("totalamount", ""));
 
 							smsManager.sendTextMessage(finalData.getString("phone").toString(), null,user_message, null, null);
 						}

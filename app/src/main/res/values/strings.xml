@@ -123,8 +123,8 @@
     <string name="no_intent_connection">Por favor, conecte seu dispositivo na internet</string>
     <string name="loading_wait">Carregando. Por favor, espere...</string>
     <string name="sms_send_failed">Falha no SMS, por favor tente novamente mais tarde!</string>
-    <string name="sms_string_for_dr">Consulta No : #appno#, #username# with mobile #mobile# has requested slot #date# on #time# Amt Rs #amount#</string>
-    <string name="sms_string_for_user">Consulta No : #appno# To Dr #drname# requested slot #date# on #time#, Amt Rs #amount#</string>
+    <string name="sms_string_for_dr">Consulta n.: #appno#, #username# com o celular #mobile# para o dia #date# às #time#</string>
+    <string name="sms_string_for_user">Consulta n.: #appno# com o #drname# agendada para o dia #date# às #time#</string>
     <string name="yr_expr"> Anos Exp.</string>
     <string name="currency">Rs.</string>
     <string name="load_more">Carregar mais</string>

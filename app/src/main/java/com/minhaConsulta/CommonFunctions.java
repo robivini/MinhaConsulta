@@ -47,7 +47,8 @@ public class CommonFunctions {
 				SharedPreferences.Editor editor = settings.edit();
 				editor.clear();
 				editor.commit();
-				intent = new Intent(act,MainActivity.class);
+				intent = new Intent(act,FbLoginActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				break;
 
 
