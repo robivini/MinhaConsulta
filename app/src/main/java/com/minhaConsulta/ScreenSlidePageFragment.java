@@ -1,6 +1,8 @@
 package com.minhaConsulta;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -20,21 +22,32 @@ import java.util.HashMap;
 
 import adapters.TimeTableAdapter;
 import appconfig.ConstValue;
+import imgLoader.JSONParser;
+import util.ConnectionDetector;
 
 /**
  * Created by subhashsanghani on 9/5/16.
  */
 public class ScreenSlidePageFragment extends Fragment {
     //String output;
+    public SharedPreferences settings;
+    public ConnectionDetector cd;
     ArrayList<HashMap<String, String>> time_table;
+    ArrayList<HashMap<String, String>> newsArray;
     TimeTableAdapter adaptertime;
     JSONObject j_clinic;
     String selected_date;
+    JSONParser jParser;
+    JSONObject json;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.row_timetable_slide, container, false);
+
+        newsArray = new ArrayList<HashMap<String,String>>();
+
+        SharedPreferences settings = this.getActivity().getSharedPreferences(ConstValue.MAIN_PREF, Context.MODE_PRIVATE);
 
         Bundle args = getArguments();
         j_clinic =  ConstValue.selected_clinic;
@@ -44,13 +57,20 @@ public class ScreenSlidePageFragment extends Fragment {
             if(j_clinic.get("times") instanceof JSONArray){
                 final JSONArray times_Array = j_clinic.getJSONArray("times");
                 if(times_Array.length() > 0){
+
+                    jParser = new JSONParser();
+
+                    json = jParser.getJSONFromUrl(ConstValue.JSON_MY_APPOINTMENT);
+
                     for (int i = 0; i < times_Array.length(); i++) {
+
                         JSONObject o = times_Array.getJSONObject(i);
                         String aux1 = o.getString("day");
                         String aux2 = ((AppointmentActivity)getActivity()).changeDateTitle(args.getInt("day"));
                         aux1 = removeAcentos(aux1);
                         aux2 = removeAcentos(aux2);
                         if(aux1.equalsIgnoreCase( aux2 )){
+
                             HashMap<String, String> map = new HashMap<String, String>();
                             map.put("day", o.getString("day"));
                             map.put("during", o.getString("during"));
