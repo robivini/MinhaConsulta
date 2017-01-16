@@ -20,7 +20,7 @@
             android:id="@+id/imageView1"
             android:layout_width="166dp"
             android:layout_height="297dp"
-            android:src="@mipmap/ic_launcher"
+            android:src="@mipmap/ic_splash"
             android:layout_gravity="center_horizontal" />
 
         <TextView

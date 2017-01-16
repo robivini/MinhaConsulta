@@ -27,12 +27,12 @@
     <!-- GSM Server Register -->
     <string name="error_config">Por favor, adcione a %1$s constante e recompile o app.</string>
     <string name="already_registered">Dispositivo já está registrado no servidor.</string>
-    <string name="gcm_registered">De GCM: dispositivo registrado com sucesso!</string>
-    <string name="gcm_unregistered">De GCM: dispositivo desregistrado com sucesso!</string>
-    <string name="gcm_message">De GCM: você tem uma mensagem!</string>
-    <string name="gcm_error">De GCM: erro(%1$s).</string>
-    <string name="gcm_recoverable_error">De GCM: erro recuperavel (%1$s).</string>
-    <string name="gcm_deleted">De GCM: servidor deletou %1$d mensagens pendentes!</string>
+    <string name="gcm_registered">De Minha Consulta: dispositivo registrado com sucesso!</string>
+    <string name="gcm_unregistered">De Minha Consulta: dispositivo desregistrado com sucesso!</string>
+    <string name="gcm_message">De Minha Consulta: você tem uma mensagem!</string>
+    <string name="gcm_error">De Minha Consulta: erro(%1$s).</string>
+    <string name="gcm_recoverable_error">De Minha Consulta: erro recuperavel (%1$s).</string>
+    <string name="gcm_deleted">De Minha Consulta: servidor deletou %1$d mensagens pendentes!</string>
     <string name="server_registering">Tentando (attempt %1$d/%2$d) registrar o dispositivo no Servidor Demo.</string>
     <string name="server_registered">Do Servidor Demo: Dispositivo adicionado com êxito!</string>
     <string name="server_unregistered">Do Servidor Demo: Dispositivo removido com êxito!</string>
@@ -45,7 +45,7 @@
 
     <!-- GSM Server Register -->
 
-    <string name="app_name">I Care</string>
+    <string name="app_name">MinhaConsulta</string>
     <string name="hello_world">Olá Mundo!</string>
     <string name="action_settings">Configurações</string>
     <string name="action_profile">Perfil</string>
@@ -54,7 +54,7 @@
     <string name="action_rate">Avalie-nos</string>
     <string name="action_about">Sobre o App</string>
     <string name="title_activity_login">LoginActivity</string>
-    <string name="title_activity_splash">I Care</string>
+    <string name="title_activity_splash">Minha Consulta</string>
     <string name="title_activity_login2">Entrar Agora</string>
     <string name="title_activity_register">Registrar</string>
     <string name="title_activity_doctor_list">Colaboradores</string>
