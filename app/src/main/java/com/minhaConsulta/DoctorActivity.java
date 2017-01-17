@@ -3,6 +3,7 @@ package com.minhaConsulta;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.minhaConsulta.AppointmentActivity;
 import com.minhaConsulta.CommonFunctions;
@@ -57,6 +59,7 @@ public class DoctorActivity extends ActionBarActivity {
 	HashMap<String, String> j_doctor;
 	public SharedPreferences settings;
 	public ConnectionDetector cd;
+
 	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +86,7 @@ public class DoctorActivity extends ActionBarActivity {
 		ImageLoader.getInstance().init(imgconfig);
 		
 		j_doctor = ConstValue.selected_doctor;
-		
+
 		TextView txtName = (TextView)findViewById(R.id.textDrName);
 		TextView txtDegree = (TextView)findViewById(R.id.textDrDegree);
 		TextView txtExpr = (TextView)findViewById(R.id.textDrExp);
@@ -121,12 +124,12 @@ public class DoctorActivity extends ActionBarActivity {
 			txtSpeciality.setText(j_doctor.get("dr_speciality"));
 			
 			LinearLayout clinics_list_view = (LinearLayout)findViewById(R.id.list_clinics);
-			
+
 			if(!j_doctor.get("clinic").toString().equalsIgnoreCase("")){
 				final JSONArray clinics = new JSONArray(j_doctor.get("clinic").toString());
 				if(clinics.length() > 0){
 					for (int i = 0; i < clinics.length(); i++) {
-						JSONObject clinic = clinics.getJSONObject(i);
+						final JSONObject clinic = clinics.getJSONObject(i);
 						LayoutInflater inflator = LayoutInflater.from(this);
 				        View v = inflator.inflate(R.layout.row_clinics_list, null);
 				        
@@ -175,6 +178,26 @@ public class DoctorActivity extends ActionBarActivity {
 								
 							}
 						}
+
+						Log.i("********",clinic.toString());
+
+						ImageView imgViewCall = (ImageView) v.findViewById(R.id.imgViewCall);
+						imgViewCall.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View view) {
+								try {
+									call(clinic.getString("cl_phone"));
+								} catch (JSONException e) {
+									e.printStackTrace();
+								}
+							}
+						});
+
+						ImageView imgViewEmail = (ImageView) v.findViewById(R.id.imgViewEmail);
+						//imgViewEmail.setOnClickListener((OnClickListener) this);
+
+						ImageView imgViewWebsite = (ImageView) v.findViewById(R.id.imgViewWebsite);
+						//imgViewWebsite.setOnClickListener((OnClickListener) this);
 				        
 						/*Button btnReview = (Button)v.findViewById(R.id.buttonReview);
 						btnReview.setContentDescription(i+"");
@@ -292,5 +315,50 @@ public class DoctorActivity extends ActionBarActivity {
         CommonFunctions common = new CommonFunctions();
         common.menuItemClick(DoctorActivity.this, id);
         return super.onOptionsItemSelected(item);
+	}
+
+	private void call(String phoneNo) {
+		(this).permissionCall(phoneNo);
+	}
+
+	private void website(String url) {
+		if(url == null || url.length() == 0) {
+			Toast.makeText(this, "No website provided.", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		String strUrl = url;
+		if(!url.contains("http")) {
+			strUrl = "http://" + url;
+		}
+		Intent webIntent = new Intent(Intent.ACTION_VIEW);
+		webIntent.setData(Uri.parse(strUrl));
+		this.startActivity(Intent.createChooser(webIntent, "Choose a browser :"));
+	}
+
+	private void email(String email) {
+		if(email == null || email.length() == 0) {
+			Toast.makeText(this, "No email provided.", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		Intent emailIntent = new Intent(Intent.ACTION_SEND);
+		emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{email} );
+		emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Restaurant Inquiry");
+		emailIntent.putExtra(Intent.EXTRA_TEXT, "Your Message Here...");
+		emailIntent.setType("message/rfc822");
+		this.startActivity(Intent.createChooser(emailIntent, "Choose an Email client :"));
+	}
+
+	public void permissionCall(String phoneNo) {
+
+		if (phoneNo == null || phoneNo.length() == 0) {
+			Toast.makeText(this, "No phone number provided.", Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		String uri = "tel:" + phoneNo.trim();
+		Log.i("", uri);
+		Intent intent = new Intent(Intent.ACTION_DIAL);
+		intent.setData(Uri.parse(String.valueOf(Uri.parse(uri))));
+		startActivity(intent);
 	}
 }
