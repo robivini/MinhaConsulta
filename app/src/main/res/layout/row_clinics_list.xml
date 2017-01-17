@@ -34,14 +34,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layoutPhotos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp" >
-    </LinearLayout>
-
-    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -54,17 +46,10 @@
             android:src="@mipmap/ic_detail_call" />
 
         <ImageView
-            android:id="@+id/imgViewWebsite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:src="@mipmap/ic_detail_email" />
-
-        <ImageView
             android:id="@+id/imgViewEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_detail_website"
+            android:src="@mipmap/ic_detail_email"
             android:paddingLeft="5dp" />
 
     </LinearLayout>

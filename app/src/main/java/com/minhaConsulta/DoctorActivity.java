@@ -179,8 +179,6 @@ public class DoctorActivity extends ActionBarActivity {
 							}
 						}
 
-						Log.i("********",clinic.toString());
-
 						ImageView imgViewCall = (ImageView) v.findViewById(R.id.imgViewCall);
 						imgViewCall.setOnClickListener(new OnClickListener() {
 							@Override
@@ -194,30 +192,18 @@ public class DoctorActivity extends ActionBarActivity {
 						});
 
 						ImageView imgViewEmail = (ImageView) v.findViewById(R.id.imgViewEmail);
-						//imgViewEmail.setOnClickListener((OnClickListener) this);
-
-						ImageView imgViewWebsite = (ImageView) v.findViewById(R.id.imgViewWebsite);
-						//imgViewWebsite.setOnClickListener((OnClickListener) this);
-				        
-						/*Button btnReview = (Button)v.findViewById(R.id.buttonReview);
-						btnReview.setContentDescription(i+"");
-						btnReview.setOnClickListener(new OnClickListener() {
-							
+						imgViewEmail.setOnClickListener(new OnClickListener() {
 							@Override
-							public void onClick(View v) {
-								// TODO Auto-generated method stub
-								String contentid = (String) v.getContentDescription();
-								try {
-									ConstValue.selected_clinic = clinics.getJSONObject(Integer.parseInt(contentid));
-								} catch (NumberFormatException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								} catch (JSONException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-								Intent intent = new Intent(DoctorActivity.this,ReviewsActivity.class);
-								startActivity(intent);
+							public void onClick(View view) {
+								email(j_doctor.get("dr_email"));
+							}
+						});
+
+						/*ImageView imgViewWebsite = (ImageView) v.findViewById(R.id.imgViewWebsite);
+						imgViewWebsite.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View view) {
+								website(j_doctor.get("dr_website"));
 							}
 						});*/
 						
