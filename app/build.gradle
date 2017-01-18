@@ -38,5 +38,8 @@ dependencies {
     compile 'com.pkmmte.view:circularimageview:1.1'
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.karumi:dexter:2.2.2'
+    compile 'com.google.android.gms:play-services-auth:8.3.0'
+
+
 
 }

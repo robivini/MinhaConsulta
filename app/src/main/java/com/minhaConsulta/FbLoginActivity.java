@@ -17,6 +17,7 @@
 package com.minhaConsulta;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -85,7 +86,7 @@ public class FbLoginActivity extends FragmentActivity implements ActivityCompat.
 //	AccessTokenTracker accessTokenTracker;
 //	AccessToken accessToken;
 //	ProfileTracker profileTracker;
-	public int RC_SIGN_IN = 101;
+	public int RC_SIGN_IN = 9001;
 	GoogleApiClient mGoogleApiClient;
 
 
@@ -159,6 +160,7 @@ public class FbLoginActivity extends FragmentActivity implements ActivityCompat.
 		// Configure sign-in to request the user's ID, email address, and basic
 // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+				.requestIdToken(getString(R.string.server_client_id))
 				.requestEmail()
 				.build();
 		// Build a GoogleApiClient with access to the Google Sign-In API and the
@@ -166,7 +168,7 @@ public class FbLoginActivity extends FragmentActivity implements ActivityCompat.
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
 				.addApi(Auth.GOOGLE_SIGN_IN_API, gso)
 				.build();
-		SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+		/*SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
 		signInButton.setSize(SignInButton.SIZE_STANDARD);
 		signInButton.setScopes(gso.getScopeArray());
 		signInButton.setOnClickListener(new OnClickListener() {
@@ -175,7 +177,7 @@ public class FbLoginActivity extends FragmentActivity implements ActivityCompat.
 				Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
 				startActivityForResult(signInIntent, RC_SIGN_IN);
 			}
-		});
+		});*/
 //		callbackManager = CallbackManager.Factory.create();
 //		accessTokenTracker= new AccessTokenTracker() {
 //			@Override
@@ -453,11 +455,9 @@ public class FbLoginActivity extends FragmentActivity implements ActivityCompat.
 		// Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
 		if (requestCode == RC_SIGN_IN) {
 			GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-			int statusCode = result.getStatus().getStatusCode();
 			handleSignInResult(result);
 		}
 	}
-
 	private void handleSignInResult(GoogleSignInResult result) {
 		Log.d("Google Signin", "handleSignInResult:" + result.isSuccess());
 		if (result.isSuccess()) {

@@ -6,6 +6,8 @@
     <string name="google_geo_api_key">AIzaSyA6jv5Mja_AnLFvrri5toNNzFl2f1uz0HI</string>
     <!-- Facebook string -->
     <string name="facebook_app_id">1457451607910685</string>
+    
+    <string name="server_client_id">firebase-adminsdk-8nghe@minhaconsulta-2cf3b.iam.gserviceaccount.com</string>
 
     <string name="cancelled">Cancelado</string>
     <string name="permission_not_granted">Não é possível executar a ação selecionada porque você não possui permissão concedida.</string>

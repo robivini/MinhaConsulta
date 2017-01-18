@@ -86,10 +86,6 @@
                 android:layout_marginTop="5dp"
 
                 /> -->
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/sign_in_button"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
     </LinearLayout>
 
  <Button

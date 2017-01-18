@@ -195,18 +195,27 @@ public class DoctorActivity extends ActionBarActivity {
 						imgViewEmail.setOnClickListener(new OnClickListener() {
 							@Override
 							public void onClick(View view) {
-								email(j_doctor.get("dr_email"));
+								try {
+									email(clinic.getString("cl_phone"));
+								} catch (JSONException e) {
+									e.printStackTrace();
+								}
 							}
 						});
 
-						/*ImageView imgViewWebsite = (ImageView) v.findViewById(R.id.imgViewWebsite);
+						ImageView imgViewWebsite = (ImageView) v.findViewById(R.id.imgViewWebsite);
 						imgViewWebsite.setOnClickListener(new OnClickListener() {
 							@Override
 							public void onClick(View view) {
-								website(j_doctor.get("dr_website"));
+								try {
+									website(clinic.getString("cl_site"));
+								} catch (JSONException e) {
+									e.printStackTrace();
+								}
 							}
-						});*/
-						
+						});
+
+
 						Button btnmap = (Button)v.findViewById(R.id.buttonLocation);
 						btnmap.setContentDescription(i+"");
 						btnmap.setOnClickListener(new OnClickListener() {

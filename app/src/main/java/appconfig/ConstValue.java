@@ -27,7 +27,7 @@ public class ConstValue {
 	public static String JSON_UPDATE_PROFILE=site_url+"/index.php?component=json&action=saveprofile";
 	public static String SIGNUP_SERVICE = site_url+"/index.php?component=json&action=register_gcm";
 	
-	public static String GCM_SENDER_ID = "720391900040";
+	public static String GCM_SENDER_ID = "212414396189";
 	
 	public static String CURRANCY = "Rs.";
 	public static String MAIN_PREF = "drappprefs";
